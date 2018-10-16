@@ -5,6 +5,9 @@ class Period {
     this.start = start
     this.end = end
   }
+  dayCount() {
+    return this.end.diff(this.start, 'days') + 1
+  }
 }
 
 export class Budget {
@@ -39,9 +42,9 @@ export class Budget {
   }
 
   _getAmountOfPeriod(period) {
-    const diffDays = period.end.diff(period.start, 'days') + 1
+    const diffDays = period.dayCount()
     const dayCountOfBudget = period.start.daysInMonth();
-    const amountOfBudget = (this.budgets[period.start.format('YYYY-MM')] || 0);
+    const amountOfBudget = this.budgets[period.start.format('YYYY-MM')] || 0
     return amountOfBudget / dayCountOfBudget * diffDays;
   }
 }
