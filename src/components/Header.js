@@ -10,8 +10,11 @@ export default class Header extends React.Component {
     let {profile: {name}} = this.state
     return name === '' ? 'Profile' : `${name}${this._isBirthday() ? '🎂' : ''}`
   }
+  getDate() {
+    return new Date();
+  }
   _isBirthday(){
-    let today = new Date()
+    let today = this.getDate()
     let {profile: {birthday: {month, day}}} = this.state
     return today.getMonth() === month - 1 && today.getDate() === day
   }
