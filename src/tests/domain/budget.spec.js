@@ -1,8 +1,5 @@
-import {
-  Budget,
-  getNumbersOfDaysInStartMonth,
-  getNumbersOfDaysInEndMonth
-} from '../../domain/budget'
+import {Budget, getNumbersOfDaysInEndMonth, getNumbersOfDaysInStartMonth} from '../../domain/budget'
+import moment from "moment";
 
 describe('Budget', () => {
   let budget
@@ -70,7 +67,7 @@ describe('Budget', () => {
 describe('getNumbersOfDaysInStartMonth', () => {
   describe('when month is 2018-07-01', () => {
     it('should return 31', () => {
-      expect(getNumbersOfDaysInStartMonth('2018-07-01')).toEqual(31)
+      expect(moment('2018-07-01').endOf('month').diff('2018-07-01', 'days') + 1).toEqual(31)
     })
   })
 })
@@ -78,7 +75,7 @@ describe('getNumbersOfDaysInStartMonth', () => {
 describe('getNumbersOfDaysInEndMonth', () => {
   describe('when date is 2018-07-15', () => {
     it('should return 15', () => {
-      expect(getNumbersOfDaysInEndMonth('2018-07-15')).toEqual(15)
+      expect('2018-07-15'.diff(moment('2018-07-15').startOf('month'), 'days') + 1).toEqual(15)
     })
   })
 })
