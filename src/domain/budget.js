@@ -18,7 +18,7 @@ export class Budget {
       // months in between
       const monthDiff = momentEndDate.diff(momentStartDate, 'months') - 1
       for (let month = 1; month <= monthDiff; month++) {
-        const monthString = moment(startDate)
+        const monthString = moment(momentStartDate)
           .add(month, 'month')
           .format('YYYY-MM')
         budget += this.budgets[monthString] || 0
