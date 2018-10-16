@@ -31,6 +31,8 @@ export default class Profile extends React.Component {
   }
 
   save() {
+    let profile = this.state.profile
+    profile.name = profile.name + 'AAA'
     Api.updateProfile(this.state.profile)
   }
 
