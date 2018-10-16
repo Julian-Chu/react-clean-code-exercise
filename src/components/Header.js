@@ -1,6 +1,7 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom'
 import './Header.css'
+import TimeProvider from '../domain/timeProvider';
 
 export default class Header extends React.Component {
   state = {
@@ -10,11 +11,8 @@ export default class Header extends React.Component {
     let {profile: {name}} = this.state
     return name === '' ? 'Profile' : `${name}${this._isBirthday() ? '🎂' : ''}`
   }
-  getDate() {
-    return new Date();
-  }
   _isBirthday(){
-    let today = this.getDate()
+    let today = TimeProvider.now();
     let {profile: {birthday: {month, day}}} = this.state
     return today.getMonth() === month - 1 && today.getDate() === day
   }
