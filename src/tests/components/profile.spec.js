@@ -35,8 +35,9 @@ describe('profile', () => {
     it('save', () => {
         wrapper.instance().save();
         // expect(Api.updateProfile.mock.calls.length).toBe(1);
-        expect(JSON.parse(_store['profile']).birthday.year).toEqual(1980);
-        expect(JSON.parse(_store['profile']).birthday.month).toEqual(1);
-        expect(JSON.parse(_store['profile']).birthday.day).toEqual(1);
+        const result = JSON.parse(_store['profile']);
+        expect(result.birthday.year).toEqual(1980);
+        expect(result.birthday.month).toEqual(1);
+        expect(result.birthday.day).toEqual(1);
     });
 });
