@@ -63,13 +63,13 @@ export class BudgetPlan {
               const monthString = moment(period.start)
                   .add(month, 'month')
                   .format('YYYY-MM')
-              budget += this.budgets[monthString] || 0
+              budget += this._getAmountOfOverlapping(period, new Budget(monthString, this.budgets[monthString]))
           }
 
           // end month
           let lastBudget = new Budget(period.end.format('YYYY-MM'),
               this.budgets[period.end.format('YYYY-MM')]);
-          budget += lastBudget.amount / lastBudget.dayCount() * new Period(lastBudget.getStart(), period.end).dayCount()
+          budget += this._getAmountOfOverlapping(period, lastBudget)
           return budget
       }
   }
