@@ -1,10 +1,10 @@
-import {Budget, getNumbersOfDaysInEndMonth, getNumbersOfDaysInStartMonth} from '../../domain/budget'
+import {BudgetPlan, getNumbersOfDaysInEndMonth, getNumbersOfDaysInStartMonth} from '../../domain/budget'
 import moment from "moment";
 
-describe('Budget', () => {
+describe('BudgetPlan', () => {
   let budget
   beforeEach(() => {
-    budget = new Budget()
+    budget = new BudgetPlan()
   })
   describe('query', () => {
     describe('no budget', () => {
