@@ -1,11 +1,10 @@
 import React from 'react'
-import Api from "../api";
 import AddBudgetPresenter from "../domain/AddBudgetAction";
 
 export default class AddBudget extends React.Component {
-    presenter = new AddBudgetPresenter();
+  presenter = new AddBudgetPresenter();
 
-    state = {
+  state = {
     budget: {
       month: '',
       amount: 0
@@ -15,16 +14,18 @@ export default class AddBudget extends React.Component {
       amount: ''
     }
   }
+
   _goToBudgetList() {
     this.props.history.push('/budgets')
   }
 
   save() {
     this.presenter.do(this.state.budget,
-        () => this._goToBudgetList(),
-        errors => this.setState({errors}))
+      () => this._goToBudgetList())
+    this.setState({errors: this.presenter.errors})
   }
-  cancel(){
+
+  cancel() {
     this._goToBudgetList()
   }
 

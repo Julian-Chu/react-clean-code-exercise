@@ -12,16 +12,18 @@ export const POSITIVE_NUMBER = {validate: positiveNumber, error: positiveError}
 
 export class Validator {
   errors = {}
-  constructor(rules){
+
+  constructor(rules) {
     this.rules = rules
   }
 
-  validate(data, callback) {
+  validate(data, success) {
     for (let field in this.rules) {
       let fail = this.rules[field].find(validation => !validation.validate(data[field])) || {error: () => ''}
-      callback(field, fail.error(field))
       this.errors[field] = fail.error(field)
     }
+
+    this.valid && success()
   }
 
   get valid() {
