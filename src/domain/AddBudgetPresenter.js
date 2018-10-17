@@ -1,5 +1,22 @@
 import {FORMAT, NOT_EMPTY, POSITIVE_NUMBER, Validator} from "./Validator";
-import {Budgets} from "./Budgets";
+import Api from "../api";
+
+class Budget {
+  constructor({month, amount}) {
+    this.amount = amount || 0;
+    this.month = month
+  }
+
+  save() {
+    let budgets = Api.getBudgets()
+    let existing = budgets && budgets.find(existedBudget => existedBudget.month === this.month)
+    if (existing) {
+      Api.updateBudget({month: this.month, amount: this.amount})
+    } else {
+      Api.addBudget({month: this.month, amount: this.amount})
+    }
+  }
+}
 
 export default class AddBudgetPresenter {
   errors = {}
@@ -10,7 +27,8 @@ export default class AddBudgetPresenter {
 
   do(budget, success) {
     this.validator.validate(budget, () => {
-      new Budgets().addOrUpdate(budget, success)
+      new Budget(budget).save();
+      success()
     })
     Object.assign(this.errors, this.validator.errors)
   }
