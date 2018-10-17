@@ -7,25 +7,25 @@ class Budget {
         this.month = month
     }
 
-    dayCount() {
-        return this.getPeriod().dayCount();
+    get dayCount() {
+        return this.period.dayCount;
     }
 
-    getEnd() {
+    get end() {
         return moment(this.month, 'YYYY-MM').endOf('month');
     }
 
-    getStart() {
+    get start() {
         return moment(this.month, 'YYYY-MM').startOf('month')
     }
 
-    getPeriod() {
-        return new Period(this.getStart(), this.getEnd())
+    get period() {
+        return new Period(this.start, this.end)
     }
 
     getAmountOfOverlapping(period) {
-        let overlappingDayCount = period.getOverlappingDayCount(this.getPeriod());
-        return this.amount / this.dayCount() * overlappingDayCount;
+        let overlappingDayCount = period.getOverlappingDayCount(this.period);
+        return this.amount / this.dayCount * overlappingDayCount;
     }
 }
 
@@ -34,7 +34,7 @@ class Period {
       this.start = start;
       this.end = end;
     }
-    dayCount() {
+    get dayCount() {
       if (this.end.isBefore(this.start)) {
           return 0
       }
@@ -43,7 +43,7 @@ class Period {
     getOverlappingDayCount(another) {
         let endOfOverlapping = this.end.isBefore(another.end) ? this.end : another.end;
         let startOfOverlapping = this.start.isAfter(another.start) ? this.start : another.start;
-        return new Period(startOfOverlapping, endOfOverlapping).dayCount();
+        return new Period(startOfOverlapping, endOfOverlapping).dayCount;
     }
 }
 
