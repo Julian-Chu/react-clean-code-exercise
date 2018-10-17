@@ -35,10 +35,7 @@ export default class Profile extends React.Component {
   }
 
   componentDidMount() {
-    let profile = Api.getProfile()
-    if (profile !== null){
-      this.setState({profile})
-    }
+    this.setState({profile: Api.getProfile()})
   }
 
   render() {
