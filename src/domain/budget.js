@@ -55,22 +55,10 @@ export class BudgetPlan {
   }
 
   _query(period) {
-      if (period.start.isSame(period.end, 'month')) {
-          let firstBudget = new Budget(period.start.format('YYYY-MM'),
-              this.budgets[period.start.format('YYYY-MM')]);
-          return firstBudget.getAmountOfOverlapping(period);
-      }
-
       let totalAmount = 0
 
-      // start month
-      let firstBudget = new Budget(period.start.format('YYYY-MM'),
-          this.budgets[period.start.format('YYYY-MM')]);
-      totalAmount += firstBudget.getAmountOfOverlapping(period)
-
-      // months in between
-      const monthDiff = period.end.diff(period.start, 'months') - 1
-      for (let month = 1; month <= monthDiff; month++) {
+      const monthDiff = period.end.diff(period.start, 'months') + 1
+      for (let month = 0; month <= monthDiff; month++) {
           const monthString = moment(period.start)
               .add(month, 'month')
               .format('YYYY-MM')
@@ -78,10 +66,6 @@ export class BudgetPlan {
           totalAmount += budget.getAmountOfOverlapping(period)
       }
 
-      // end month
-      let lastBudget = new Budget(period.end.format('YYYY-MM'),
-          this.budgets[period.end.format('YYYY-MM')]);
-      totalAmount += lastBudget.getAmountOfOverlapping(period)
       return totalAmount
   }
 
