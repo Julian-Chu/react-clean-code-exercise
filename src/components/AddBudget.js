@@ -1,5 +1,5 @@
 import React from 'react'
-import AddBudgetPresenter from "../domain/AddBudgetAction";
+import AddBudgetPresenter from "../domain/AddBudgetPresenter";
 
 export default class AddBudget extends React.Component {
   presenter = new AddBudgetPresenter();
