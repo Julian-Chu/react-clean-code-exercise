@@ -7,7 +7,7 @@ class Budget {
     }
 
     dayCount() {
-        return new Period(moment(this.month, 'YYYY-MM').startOf('month'), moment(this.month, 'YYYY-MM').endOf('month')).dayCount();
+        return this.getPeriod().dayCount();
     }
 
     getEnd() {
@@ -19,7 +19,7 @@ class Budget {
     }
 
     getPeriod() {
-        return new Period(moment(this.month, 'YYYY-MM').startOf('month'), moment(this.month, 'YYYY-MM').endOf('month'))
+        return new Period(this.getStart(), this.getEnd())
     }
 
     getAmountOfOverlapping(period) {
