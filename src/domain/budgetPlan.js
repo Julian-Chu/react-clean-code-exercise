@@ -46,28 +46,27 @@ export class BudgetPlan {
         if (period.startDate.isSame(period.endDate, 'month')) {
             let budget = new Budget(period.startDate.format('YYYY-MM'), this.budgets[period.startDate.format('YYYY-MM')]);
             return budget.getAmountOfOverlapping(period);
-        } else {
-            let totalAmount = 0;
-
-            // start month
-            let firstBudget = new Budget(period.startDate.format('YYYY-MM'), this.budgets[period.startDate.format('YYYY-MM')]);
-            totalAmount += firstBudget.getAmountOfOverlapping(period);
-
-            // months in between
-            const monthDiff = period.endDate.diff(period.startDate, 'months') - 1;
-            for (let month = 1; month <= monthDiff; month++) {
-                const monthString = moment(period.startDate, 'YYYY-MM-DD')
-                    .add(month, 'month')
-                    .format('YYYY-MM');
-                let budget = new Budget(monthString, this.budgets[monthString]);
-                totalAmount += budget.getAmountOfOverlapping(period);
-            }
-
-            // end month
-            let lastBudget = new Budget(period.endDate.format('YYYY-MM'), this.budgets[period.endDate.format('YYYY-MM')]);
-            totalAmount += lastBudget.getAmountOfOverlapping(period);
-            return totalAmount
         }
+        let totalAmount = 0;
+
+        // start month
+        let firstBudget = new Budget(period.startDate.format('YYYY-MM'), this.budgets[period.startDate.format('YYYY-MM')]);
+        totalAmount += firstBudget.getAmountOfOverlapping(period);
+
+        // months in between
+        const monthDiff = period.endDate.diff(period.startDate, 'months') - 1;
+        for (let month = 1; month <= monthDiff; month++) {
+            const monthString = moment(period.startDate, 'YYYY-MM-DD')
+                .add(month, 'month')
+                .format('YYYY-MM');
+            let budget = new Budget(monthString, this.budgets[monthString]);
+            totalAmount += budget.getAmountOfOverlapping(period);
+        }
+
+        // end month
+        let lastBudget = new Budget(period.endDate.format('YYYY-MM'), this.budgets[period.endDate.format('YYYY-MM')]);
+        totalAmount += lastBudget.getAmountOfOverlapping(period);
+        return totalAmount
     }
 }
 
