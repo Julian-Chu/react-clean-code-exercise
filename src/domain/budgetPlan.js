@@ -20,16 +20,16 @@ class Period {
 
 class Budget {
     constructor(month, amount) {
-        this.month = month;
         this.amount = amount || 0;
+        this.period = new Period(moment(month, 'YYYY-MM').startOf('month'), moment(month, 'YYYY-MM').endOf('month'));
     }
 
     dayCount() {
-        return new Period(moment(this.month, 'YYYY-MM').startOf('month'), moment(this.month, 'YYYY-MM').endOf('month')).dayCount();
+        return this.period.dayCount();
     }
 
     getPeriod() {
-        return new Period(moment(this.month, 'YYYY-MM').startOf('month'), moment(this.month, 'YYYY-MM').endOf('month'));
+        return this.period;
     }
 
     getAmountOfOverlapping(period) {
