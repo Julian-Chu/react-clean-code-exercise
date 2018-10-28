@@ -15,18 +15,13 @@ export class Budget {
             let budget = 0;
 
             // start month
-            const startDate = momentStartDate;
-
-            const numberOfDaysInStartMonth = moment(momentStartDate).endOf('month').diff(momentStartDate, 'days') + 1;
-            const amountDaysFirst = momentStartDate.daysInMonth();
-            const firstMonthBudget = this.budgets[momentStartDate.format('YYYY-MM')] || 0;
-            const totalBudgetFirstMonth = numberOfDaysInStartMonth * (firstMonthBudget / amountDaysFirst);
+            const totalBudgetFirstMonth = this.getAmountByPeriod(momentStartDate);
             budget += totalBudgetFirstMonth;
 
             // months in between
             const monthDiff = momentEndDate.diff(momentStartDate, 'months') - 1;
             for (let month = 1; month <= monthDiff; month++) {
-                const monthString = moment(startDate, 'YYYY-MM-DD')
+                const monthString = moment(momentStartDate, 'YYYY-MM-DD')
                     .add(month, 'month')
                     .format('YYYY-MM');
                 const budgetThisMonth = this.budgets[monthString] || 0;
@@ -41,6 +36,14 @@ export class Budget {
             budget += totalBudgetLastMonth;
             return budget
         }
+    }
+
+    getAmountByPeriod(startDate) {
+        const numberOfDaysInStartMonth = moment(startDate).endOf('month').diff(startDate, 'days') + 1;
+        const amountDaysFirst = startDate.daysInMonth();
+        const firstMonthBudget = this.budgets[startDate.format('YYYY-MM')] || 0;
+        const totalBudgetFirstMonth = numberOfDaysInStartMonth * (firstMonthBudget / amountDaysFirst);
+        return totalBudgetFirstMonth;
     }
 }
 
