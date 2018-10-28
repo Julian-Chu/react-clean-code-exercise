@@ -19,12 +19,15 @@ export class Budget {
         // const momentEndDate = moment(endDate, 'YYYY-MM-DD');
         const period = new Period(startDate, endDate);
         if (period.startDate.isSame(period.endDate, 'month')) {
-            return this.getAmountByPeriod(period.startDate, period.endDate);
+            return this.getAmountByPeriod(new Period(period.startDate, period.endDate));
         } else {
             let budget = 0;
 
             // start month
-            budget += this.getAmountByPeriod(period.startDate, moment(period.startDate).endOf("month"));
+            budget += this.getAmountByPeriod(new Period(
+                period.startDate,
+                moment(period.startDate).endOf("month")
+            ));
 
             // months in between
             const monthDiff = period.endDate.diff(period.startDate, 'months') - 1;
@@ -36,14 +39,17 @@ export class Budget {
             }
 
             // end month
-            budget += this.getAmountByPeriod(moment(period.endDate).startOf("month"), period.endDate);
+            budget += this.getAmountByPeriod(new Period(
+                moment(period.endDate).startOf("month"),
+                period.endDate
+            ));
             return budget
         }
     }
 
-    getAmountByPeriod(startDate, endDate) {
-        const budgetOfMonth = this.budgets[startDate.format('YYYY-MM')] || 0;
-        return (endDate.diff(startDate, 'days') + 1) * (budgetOfMonth / startDate.daysInMonth());
+    getAmountByPeriod(period) {
+        const budgetOfMonth = this.budgets[period.startDate.format('YYYY-MM')] || 0;
+        return (period.endDate.diff(period.startDate, 'days') + 1) * (budgetOfMonth / period.startDate.daysInMonth());
     }
 }
 
