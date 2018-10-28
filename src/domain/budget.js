@@ -38,10 +38,3 @@ export class Budget {
     }
 }
 
-export const getNumbersOfDaysInEndMonth = date => {
-    const endDate = moment(date, 'YYYY-MM-DD');
-    const startDate = moment(date, 'YYYY-MM-DD').startOf('month');
-    const remainingDays = endDate.diff(startDate, 'days');
-
-    return remainingDays + 1;
-};
