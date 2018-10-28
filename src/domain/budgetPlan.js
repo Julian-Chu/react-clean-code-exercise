@@ -12,8 +12,13 @@ class Period {
 }
 
 class Budget {
-    constructor(amount) {
+    constructor(month, amount) {
+        this.month = month;
         this.amount = amount || 0;
+    }
+
+    dayCount() {
+        return new Period(moment(this.month, 'YYYY-MM').startOf('month'), moment(this.month, 'YYYY-MM').endOf('month')).dayCount();
     }
 
 }
@@ -24,7 +29,7 @@ export class BudgetPlan {
     query(startDate, endDate) {
         const period = new Period(startDate, endDate);
         if (period.startDate.isSame(period.endDate, 'month')) {
-            return this.getAmountByPeriod(new Period(period.startDate, period.endDate), new Budget(this.budgets[period.startDate.format('YYYY-MM')]));
+            return this.getAmountByPeriod(new Period(period.startDate, period.endDate), new Budget(period.startDate.format('YYYY-MM'), this.budgets[period.startDate.format('YYYY-MM')]));
         } else {
             let budget = 0;
 
@@ -32,7 +37,7 @@ export class BudgetPlan {
             budget += this.getAmountByPeriod(new Period(
                 period.startDate,
                 moment(period.startDate).endOf("month")
-            ), new Budget(this.budgets[period.startDate.format('YYYY-MM')]));
+            ), new Budget(period.startDate.format('YYYY-MM'), this.budgets[period.startDate.format('YYYY-MM')]));
 
             // months in between
             const monthDiff = period.endDate.diff(period.startDate, 'months') - 1;
@@ -47,13 +52,13 @@ export class BudgetPlan {
             budget += this.getAmountByPeriod(new Period(
                 moment(period.endDate).startOf("month"),
                 period.endDate
-            ), new Budget(this.budgets[period.endDate.format('YYYY-MM')]));
+            ), new Budget(period.endDate.format('YYYY-MM'), this.budgets[period.endDate.format('YYYY-MM')]));
             return budget
         }
     }
 
     getAmountByPeriod(period, budget) {
-        return period.dayCount() * (budget.amount / period.startDate.daysInMonth());
+        return period.dayCount() * (budget.amount / budget.dayCount());
     }
 }
 
