@@ -11,13 +11,20 @@ class Period {
     }
 }
 
+class Budget {
+    constructor(amount) {
+        this.amount = amount || 0;
+    }
+
+}
+
 export class BudgetPlan {
     budgets = {};
 
     query(startDate, endDate) {
         const period = new Period(startDate, endDate);
         if (period.startDate.isSame(period.endDate, 'month')) {
-            return this.getAmountByPeriod(new Period(period.startDate, period.endDate));
+            return this.getAmountByPeriod(new Period(period.startDate, period.endDate), new Budget(this.budgets[period.startDate.format('YYYY-MM')]));
         } else {
             let budget = 0;
 
@@ -25,7 +32,7 @@ export class BudgetPlan {
             budget += this.getAmountByPeriod(new Period(
                 period.startDate,
                 moment(period.startDate).endOf("month")
-            ));
+            ), new Budget(this.budgets[period.startDate.format('YYYY-MM')]));
 
             // months in between
             const monthDiff = period.endDate.diff(period.startDate, 'months') - 1;
@@ -40,15 +47,13 @@ export class BudgetPlan {
             budget += this.getAmountByPeriod(new Period(
                 moment(period.endDate).startOf("month"),
                 period.endDate
-            ));
+            ), new Budget(this.budgets[period.endDate.format('YYYY-MM')]));
             return budget
         }
     }
 
-    getAmountByPeriod(period) {
-        const budgetOfMonth = this.budgets[period.startDate.format('YYYY-MM')] || 0;
-        // return (period.endDate.diff(period.startDate, 'days') + 1) * (budgetOfMonth / period.startDate.daysInMonth());
-        return period.dayCount() * (budgetOfMonth / period.startDate.daysInMonth());
+    getAmountByPeriod(period, budget) {
+        return period.dayCount() * (budget.amount / period.startDate.daysInMonth());
     }
 }
 
