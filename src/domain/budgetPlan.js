@@ -1,22 +1,16 @@
 import moment from 'moment'
 
 class Period {
-    startDate;
-    endDate;
-
     constructor(startDate, endDate) {
         this.startDate = moment(startDate, 'YYYY-MM-DD');
         this.endDate = moment(endDate, 'YYYY-MM-DD');
     }
-
 }
 
-export class Budget {
+export class BudgetPlan {
     budgets = {};
 
     query(startDate, endDate) {
-        // const momentStartDate = moment(startDate, 'YYYY-MM-DD');
-        // const momentEndDate = moment(endDate, 'YYYY-MM-DD');
         const period = new Period(startDate, endDate);
         if (period.startDate.isSame(period.endDate, 'month')) {
             return this.getAmountByPeriod(new Period(period.startDate, period.endDate));

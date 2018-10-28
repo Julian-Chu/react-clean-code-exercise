@@ -1,9 +1,9 @@
-import {Budget,} from '../../domain/budget'
+import {BudgetPlan,} from '../../domain/budgetPlan'
 
-describe('Budget', () => {
+describe('BudgetPlan', () => {
     let budget
     beforeEach(() => {
-        budget = new Budget()
+        budget = new BudgetPlan()
     })
     describe('query', () => {
         describe('no budget', () => {
