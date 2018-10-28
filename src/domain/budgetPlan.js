@@ -5,6 +5,10 @@ class Period {
         this.startDate = moment(startDate, 'YYYY-MM-DD');
         this.endDate = moment(endDate, 'YYYY-MM-DD');
     }
+
+    dayCount() {
+        return this.endDate.diff(this.startDate, 'days') + 1;
+    }
 }
 
 export class BudgetPlan {
@@ -43,7 +47,8 @@ export class BudgetPlan {
 
     getAmountByPeriod(period) {
         const budgetOfMonth = this.budgets[period.startDate.format('YYYY-MM')] || 0;
-        return (period.endDate.diff(period.startDate, 'days') + 1) * (budgetOfMonth / period.startDate.daysInMonth());
+        // return (period.endDate.diff(period.startDate, 'days') + 1) * (budgetOfMonth / period.startDate.daysInMonth());
+        return period.dayCount() * (budgetOfMonth / period.startDate.daysInMonth());
     }
 }
 
