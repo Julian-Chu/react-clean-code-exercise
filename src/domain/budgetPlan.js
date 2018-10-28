@@ -33,7 +33,6 @@ export class BudgetPlan {
     query(startDate, endDate) {
         const period = new Period(startDate, endDate);
         if (period.startDate.isSame(period.endDate, 'month')) {
-            // return this.getAmountByPeriod(new Period(period.startDate, period.endDate), new Budget(period.startDate.format('YYYY-MM'), this.budgets[period.startDate.format('YYYY-MM')]));
             return this._getAmountOfOverlapping(period, new Budget(period.startDate.format('YYYY-MM'), this.budgets[period.startDate.format('YYYY-MM')]));
         } else {
             let budget = 0;
@@ -53,10 +52,6 @@ export class BudgetPlan {
             }
 
             // end month
-            // budget += this.getAmountByPeriod(new Period(
-            //     moment(period.endDate).startOf("month"),
-            //     period.endDate
-            // ), new Budget(period.endDate.format('YYYY-MM'), this.budgets[period.endDate.format('YYYY-MM')]));
             budget += this._getAmountOfOverlapping(
                 period
                 , new Budget(period.endDate.format('YYYY-MM'), this.budgets[period.endDate.format('YYYY-MM')]));
@@ -65,10 +60,15 @@ export class BudgetPlan {
     }
 
     _getAmountOfOverlapping(period, budget) {
+        let overlappingDayCount = this._getOverlappingDays(period, budget);
+        return overlappingDayCount * (budget.amount / budget.dayCount());
+    }
+
+    _getOverlappingDays(period, budget) {
         let start = period.startDate.isBefore(budget.getPeriod().startDate) ? budget.getPeriod().startDate : period.startDate;
         let end = period.endDate.isAfter(budget.getPeriod().endDate) ? budget.getPeriod().endDate : period.endDate;
         let overlappingDayCount = new Period(start, end).dayCount();
-        return overlappingDayCount * (budget.amount / budget.dayCount());
+        return overlappingDayCount;
     }
 
     getAmountByPeriod(period, budget) {
